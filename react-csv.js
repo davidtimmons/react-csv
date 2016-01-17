@@ -1,9 +1,10 @@
 /**
  * React CSV Spreadsheet Component v1.0.0
  * David Timmons (github@timmons.io)
+ * http://david.timmons.io
  * MIT License
  *
- * React component that simulates a simple spreadsheet. Features:
+ * A React component that simulates a simple CSV spreadsheet. Features:
  *   ++ Define number of columns and number of rows.
  *   ++ Create an optional footer row.
  *   ++ Create an optional download link for modern browsers.
