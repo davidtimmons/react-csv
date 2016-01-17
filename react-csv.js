@@ -7,7 +7,7 @@
  * A React component that simulates a simple CSV spreadsheet. Features:
  *   ++ Define number of columns and number of rows.
  *   ++ Create an optional footer row.
- *   ++ Create an optional download link for modern browsers.
+ *   ++ Create an optional download link (for modern browsers only.)
  *   ++ Undo a change with CTRL-Z.
  *   ++ Redo a change with CTRL-Y.
  *   ++ Export all data into a CSV file.
