@@ -2,7 +2,7 @@ React CSV Component
 ====================
 _**Author:** David Timmons ([http://david.timmons.io](http://david.timmons.io "Visit my website!"))_
 
-React CSV is a React component written in _JSX_ and _ES2015_ that simulates a simple CSV (Comma-Separated Value) spreadsheet.
+React CSV is a React component written in _JSX_ and _JavaScript (ES2015)_ that simulates a simple CSV (Comma-Separated Value) spreadsheet.
 
 ## Features:
 
