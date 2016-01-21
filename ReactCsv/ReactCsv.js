@@ -1,10 +1,12 @@
 /**
- * React CSV Spreadsheet Component v1.0.0
+ * React CSV Spreadsheet v1.1.0
  * David Timmons (github@timmons.io)
  * http://david.timmons.io
  * MIT License
  *
- * A React component that simulates a simple CSV spreadsheet. Features:
+ * A React + Flux app that simulates a simple CSV spreadsheet.
+ *
+ * FEATURES:
  *   ++ Define number of columns and number of rows.
  *   ++ Create an optional footer row.
  *   ++ Create an optional download link (for modern browsers only.)
@@ -12,7 +14,8 @@
  *   ++ Redo a change with CTRL-Y.
  *   ++ Export all data into a CSV file.
  *
- * DEPENDENCIES: [React with Addons, JSX/ES2015 Transpiler, Basscss,
+ * DEPENDENCIES:
+ *   [React with Addons, JSX/ES2015 Transpiler, Basscss,
  *   IE13+ (export feature will not work in older IE versions)]
  *
  * EXAMPLE:
@@ -24,41 +27,8 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-
-
-// --------- //
-// POLYFILLS //
-// --------- //
-
-// Array.prototype.fill()
-// Source: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/fill#Polyfill
-function polyfills() {
- if (!Array.prototype.fill) {
-   Array.prototype.fill = function(value) {
-     if (this == null) {
-       throw new TypeError('this is null or not defined');
-     }
-     var O = Object(this);
-     var len = O.length >>> 0;
-     var start = arguments[1];
-     var relativeStart = start >> 0;
-     var k = relativeStart < 0 ?
-       Math.max(len + relativeStart, 0) :
-       Math.min(relativeStart, len);
-     var end = arguments[2];
-     var relativeEnd = end === undefined ?
-       len : end >> 0;
-     var final = relativeEnd < 0 ?
-       Math.max(len + relativeEnd, 0) :
-       Math.min(relativeEnd, len);
-     while (k < final) {
-       O[k] = value;
-       k++;
-     }
-     return O;
-   };
- }
-}
+import update from 'react-addons-update';
+import './polyfills.js'
 
 
 // ---------------- //
@@ -230,23 +200,23 @@ var Sheet = React.createClass({
   undo: function() {
     // Undo the current data state.
     this.setState((prevState) => {return {
-      tableUndo: React.addons.update(prevState.tableUndo, {$splice: [[0, 1]]}),
-      tableRedo: React.addons.update(prevState.tableRedo, {$unshift: [JSON.stringify(prevState.table)]}),
+      tableUndo: update(prevState.tableUndo, {$splice: [[0, 1]]}),
+      tableRedo: update(prevState.tableRedo, {$unshift: [JSON.stringify(prevState.table)]}),
       table: JSON.parse(prevState.tableUndo[0])
     }});
   },
   redo: function() {
     // Restore the previous data state.
     this.setState((prevState) => {return {
-      tableUndo: React.addons.update(prevState.tableUndo, {$unshift: [JSON.stringify(prevState.table)]}),
-      tableRedo: React.addons.update(prevState.tableRedo, {$splice: [[0, 1]]}),
+      tableUndo: update(prevState.tableUndo, {$unshift: [JSON.stringify(prevState.table)]}),
+      tableRedo: update(prevState.tableRedo, {$splice: [[0, 1]]}),
       table: JSON.parse(prevState.tableRedo[0])
     }});
   },
   reset: function() {
     // Clear all data and destroy the redo queue.
     this.setState((prevState) => {return {
-      tableUndo: React.addons.update(prevState.tableUndo, {$unshift: [JSON.stringify(prevState.table)]}),
+      tableUndo: update(prevState.tableUndo, {$unshift: [JSON.stringify(prevState.table)]}),
       tableRedo: [],
       table: this.createEmptyTable()
     }});
@@ -263,9 +233,9 @@ var Sheet = React.createClass({
     const rowIndex = e.currentTarget.dataset.row;
     const colIndex = e.currentTarget.cellIndex;
     this.setState((prevState) => {return {
-      tableUndo: React.addons.update(prevState.tableUndo, {$unshift: [JSON.stringify(prevState.table)]}),
+      tableUndo: update(prevState.tableUndo, {$unshift: [JSON.stringify(prevState.table)]}),
       tableRedo: [],
-      table: React.addons.update(prevState.table, {[rowIndex]: {$splice: [[colIndex, 1, e.target.value]]}})
+      table: update(prevState.table, {[rowIndex]: {$splice: [[colIndex, 1, e.target.value]]}})
     }});
   },
   render: function () {
