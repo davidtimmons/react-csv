@@ -3,19 +3,30 @@
  * David Timmons (github@timmons.io)
  * http://david.timmons.io
  * MIT License
+ *
+ * @summary A component controlling the main table body rows.
+ * @module ReactCsv/BodyRows
  */
 
 import React from 'react';
 import Cell from './Cell.js';
 
 
-// Spreadsheet body rows.
-var BodyRows = React.createClass({
-  propTypes: {
-    saveChange: React.PropTypes.func.isRequired,
-    csv: React.PropTypes.arrayOf(React.PropTypes.array.isRequired)
-  },
-  render: function() {
+/**
+ * Spreadsheet body rows.
+ * @extends React.Component
+ */
+export default class BodyRows extends React.Component {
+
+  constructor(props) {
+    super(props);
+  }
+
+  /**
+   * Default React render function.
+   * @return {object} A reference to the DOM component.
+   */
+  render() {
     var cells = (self =>
       Array(self.props.numRows).fill(0).map((val, i) =>
         <tr key={i+1}>
@@ -33,6 +44,14 @@ var BodyRows = React.createClass({
       </tbody>
     );
   }
-});
+}
 
-export default BodyRows;
+/**
+ * Restrict the property types.
+ * @type {object}
+ * @memberof BodyRows
+ */
+BodyRows.propTypes = {
+  saveChange: React.PropTypes.func.isRequired,
+  csv: React.PropTypes.arrayOf(React.PropTypes.array.isRequired)
+};
