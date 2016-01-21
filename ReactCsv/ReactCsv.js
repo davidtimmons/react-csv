@@ -22,6 +22,10 @@
  *   );
  */
 
+import React from 'react';
+import ReactDOM from 'react-dom';
+
+
 // --------- //
 // POLYFILLS //
 // --------- //
@@ -287,5 +291,3 @@ ReactDOM.render(
   <Sheet numCols={8} numRows={5} hasFooter={true} showExportButton={true} />,
   document.getElementById('react-csv')
 );
-
-module.exports = Sheet;
