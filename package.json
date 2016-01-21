@@ -2,7 +2,7 @@
   "name": "react-csv",
   "version": "1.0.0",
   "private": true,
-  "description": "A React + Flux app that simulates a simple CSV spreadsheet.",
+  "description": "A React/Flux module that simulates a simple CSV spreadsheet.",
   "license": "MIT",
   "author": "David Timmons (http://david.timmons.io/)",
   "homepage": "https://github.com/davidtimmons/react-csv#readme",

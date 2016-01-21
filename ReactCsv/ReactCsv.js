@@ -4,7 +4,7 @@
  * http://david.timmons.io
  * MIT License
  *
- * A React + Flux app that simulates a simple CSV spreadsheet.
+ * A React/Flux app that simulates a simple CSV spreadsheet.
  *
  * FEATURES:
  *   ++ Define number of columns and number of rows.
@@ -15,7 +15,7 @@
  *   ++ Export all data into a CSV file.
  *
  * DEPENDENCIES:
- *   [React with Addons, JSX/ES2015 Transpiler, Basscss,
+ *   [Webpack, React with Addons, JSX/ES2015 Transpiler, Basscss,
  *   IE13+ (export feature will not work in older IE versions)]
  *
  * EXAMPLE:
