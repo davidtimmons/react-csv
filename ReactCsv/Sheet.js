@@ -55,7 +55,7 @@ export default class Sheet extends React.Component {
       // Listen for keystrokes.
       // Undo: CTRL-Z | Redo: CTRL-Y
       if (e.ctrlKey && (e.key === 'z' || e.keyCode === 90 || e.which === 90) && this.state.tableUndo.length > 0) {
-        this._undo();
+        ReactCsvActions.undo();
       } else if (e.ctrlKey && (e.key === 'y' || e.keyCode === 89 || e.which === 89) && this.state.tableRedo.length > 0) {
         this._redo();
       }
@@ -80,17 +80,6 @@ export default class Sheet extends React.Component {
   }
 
   /**
-   * Undo the current data state.
-   */
-  _undo() {
-    this.setState((prevState) => {return {
-      tableUndo: update(prevState.tableUndo, {$splice: [[0, 1]]}),
-      tableRedo: update(prevState.tableRedo, {$unshift: [JSON.stringify(prevState.table)]}),
-      table: JSON.parse(prevState.tableUndo[0])
-    }});
-  }
-
-  /**
    * Restore the previous data state.
    */
   _redo() {
@@ -106,19 +95,7 @@ export default class Sheet extends React.Component {
    * @param {object} e A DOM event object.
    */
   _saveChange(e) {
-    switch (e.target.value) {
-      case '':
-      case null:
-      case undefined:
-        return;
-    }
-    const rowIndex = e.currentTarget.dataset.row;
-    const colIndex = e.currentTarget.cellIndex;
-    this.setState((prevState) => {return {
-      tableUndo: update(prevState.tableUndo, {$unshift: [JSON.stringify(prevState.table)]}),
-      tableRedo: [],
-      table: update(prevState.table, {[rowIndex]: {$splice: [[colIndex, 1, e.target.value]]}})
-    }});
+    ReactCsvActions.save(e);
   }
 
   /**

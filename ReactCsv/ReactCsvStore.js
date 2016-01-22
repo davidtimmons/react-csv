@@ -43,6 +43,25 @@ function createEmptyTable(numRows, numCols) {
 }
 
 /**
+ * Create the data store based on custom table size settings.
+ * @param {object} data Data store configuration settings.
+ */
+function initializeStore(data) {
+  var numRows = data.numRows || 0;
+  var numCols = data.numCols || 0;
+  _dataStore = Object.assign(_dataStore, data);
+  _dataStore.table = createEmptyTable(numRows, numCols);
+}
+
+/**
+ * Undo the current data state.
+ */
+function undo() {
+  _dataStore.tableRedo.unshift(JSON.stringify(_dataStore.table));
+  _dataStore.table = JSON.parse(_dataStore.tableUndo.shift());
+}
+
+/**
  * Clear all data and destroy the redo queue.
  */
 function reset() {
@@ -51,6 +70,17 @@ function reset() {
   _dataStore.table = createEmptyTable(_dataStore.numRows, _dataStore.numCols);
 }
 
+/**
+ * Update state with the new change and enable undo.
+ * @param {object} e A DOM event object.
+ */
+function save(e) {
+  var rowIndex = e.currentTarget.dataset.row;
+  var colIndex = e.currentTarget.cellIndex;
+  _dataStore.tableUndo.unshift(JSON.stringify(_dataStore.table));
+  _dataStore.tableRedo = [];
+  _dataStore.table[rowIndex][colIndex] = e.target.value;
+}
 
 // -------------- //
 // DATA STORE API //
@@ -59,25 +89,48 @@ function reset() {
 const CHANGE_EVENT = 'change';
 
 /**
- * Register event handlers and define a public API.
+ * Register event handlers using Node.js EventEmitter and define a public API.
  */
 var ReactCsvStore = Object.assign({}, EventEmitter.prototype, {
+
+  /**
+   * Register a listener with a callback.
+   * @param  {function} next The registered callback.
+   */
   addChangeListener: function(next) {
     this.on(CHANGE_EVENT, next);
   },
 
+  /**
+   * Remove a listener.
+   * @param  {function} next The registered callback.
+   */
   removeChangeListener: function(next) {
     this.removeListener(CHANGE_EVENT, next);
   },
 
+  /**
+   * Signal a change has occurred.
+   * @param  {function} next The registered callback.
+   */
   emitChange: function() {
     this.emit(CHANGE_EVENT);
   },
 
+  /**
+   * Get the state stored in this data store.
+   * @return {object} CSV table state object containing all cell values.
+   */
   getAll: function() {
     return _dataStore;
   },
 
+  /**
+   * Get an empty table, useful for establishing initial state.
+   * @param  {number} numRows The number of table rows.
+   * @param  {number} numCols The number of table columns.
+   * @return {[[null]]}       An array of arrays containing null values.
+   */
   getEmptyTable: function(numRows, numCols) {
     return createEmptyTable(numRows, numCols);
   }
@@ -94,6 +147,8 @@ var ReactCsvStore = Object.assign({}, EventEmitter.prototype, {
 ReactCsvDispatcher.register(function(payload) {
   switch (payload.actionType) {
     case ReactCsvConstants.UNDO:
+      undo();
+      ReactCsvStore.emitChange();
       break;
     case ReactCsvConstants.REDO:
       break;
@@ -102,11 +157,11 @@ ReactCsvDispatcher.register(function(payload) {
       ReactCsvStore.emitChange();
       break;
     case ReactCsvConstants.SAVE_INPUT:
+      save(payload.data);
+      ReactCsvStore.emitChange();
       break;
     case ReactCsvConstants.CONFIGURE_DATA_STORE:
-      if (typeof payload.config === 'object') {
-        _dataStore = Object.assign(_dataStore, payload.config);
-      }
+      initializeStore(payload.data);
       break;
     default:
       // No operation needed!

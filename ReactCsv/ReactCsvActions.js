@@ -46,9 +46,16 @@ class ReactCsvActions {
   /**
    * Activate the save function. Triggered in <Cell>.
    */
-  save() {
+  save(e) {
+    switch (e.target.value) {
+      case '':
+      case null:
+      case undefined:
+        return;
+    }
     ReactCsvDispatcher.dispatch({
-      actionType: ReactCsvConstants.SAVE_INPUT
+      actionType: ReactCsvConstants.SAVE_INPUT,
+      data: e
     });
   }
 
@@ -57,9 +64,12 @@ class ReactCsvActions {
    * @param  {object} config Configuration settings to merge with state object.
    */
   configureDataStore(config) {
+    if (typeof config !== 'object') {
+      return;
+    }
     ReactCsvDispatcher.dispatch({
       actionType: ReactCsvConstants.CONFIGURE_DATA_STORE,
-      config: config
+      data: config
     });
   }
 };
