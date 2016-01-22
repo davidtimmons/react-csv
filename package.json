@@ -11,6 +11,7 @@
     "url": "https://github.com/davidtimmons/react-csv/issues"
   },
   "dependencies": {
+    "flux": "^2.1.1",
     "react": "^0.14.6",
     "react-addons-update": "^0.14.6",
     "react-dom": "^0.14.6"
