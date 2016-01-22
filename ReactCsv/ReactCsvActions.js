@@ -21,7 +21,8 @@ class ReactCsvActions {
    */
   undo() {
     ReactCsvDispatcher.dispatch({
-      actionType: ReactCsvConstants.UNDO
+      actionType: ReactCsvConstants.UNDO,
+      data: null
     });
   }
 
@@ -30,7 +31,8 @@ class ReactCsvActions {
    */
   redo() {
     ReactCsvDispatcher.dispatch({
-      actionType: ReactCsvConstants.REDO
+      actionType: ReactCsvConstants.REDO,
+      data: null
     });
   }
 
@@ -39,7 +41,8 @@ class ReactCsvActions {
    */
   reset() {
     ReactCsvDispatcher.dispatch({
-      actionType: ReactCsvConstants.RESET
+      actionType: ReactCsvConstants.RESET,
+      data: null
     });
   }
 

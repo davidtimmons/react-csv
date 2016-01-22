@@ -62,6 +62,14 @@ function undo() {
 }
 
 /**
+ * Restore the previous data state.
+ */
+function redo() {
+  _dataStore.tableUndo.unshift(JSON.stringify(_dataStore.table));
+  _dataStore.table = JSON.parse(_dataStore.tableRedo.shift());
+}
+
+/**
  * Clear all data and destroy the redo queue.
  */
 function reset() {
@@ -151,6 +159,8 @@ ReactCsvDispatcher.register(function(payload) {
       ReactCsvStore.emitChange();
       break;
     case ReactCsvConstants.REDO:
+      redo();
+      ReactCsvStore.emitChange();
       break;
     case ReactCsvConstants.RESET:
       reset();

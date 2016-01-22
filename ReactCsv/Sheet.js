@@ -51,13 +51,13 @@ export default class Sheet extends React.Component {
    * the document.
    */
   componentDidMount() {
+    // Listen for keystrokes.
     document.onkeydown = function(e) {
-      // Listen for keystrokes.
       // Undo: CTRL-Z | Redo: CTRL-Y
       if (e.ctrlKey && (e.key === 'z' || e.keyCode === 90 || e.which === 90) && this.state.tableUndo.length > 0) {
         ReactCsvActions.undo();
       } else if (e.ctrlKey && (e.key === 'y' || e.keyCode === 89 || e.which === 89) && this.state.tableRedo.length > 0) {
-        this._redo();
+        ReactCsvActions.redo();
       }
     }.bind(this);
 
@@ -70,24 +70,6 @@ export default class Sheet extends React.Component {
    */
   componentWillUnmount() {
     ReactCsvStore.removeChangeListener(this._onChange.bind(this));
-  }
-
-  /**
-   * Event handler f or "change" events coming from the ReactCsvStore.
-   */
-  _onChange() {
-    this.setState(ReactCsvStore.getAll());
-  }
-
-  /**
-   * Restore the previous data state.
-   */
-  _redo() {
-    this.setState((prevState) => {return {
-      tableUndo: update(prevState.tableUndo, {$unshift: [JSON.stringify(prevState.table)]}),
-      tableRedo: update(prevState.tableRedo, {$splice: [[0, 1]]}),
-      table: JSON.parse(prevState.tableRedo[0])
-    }});
   }
 
   /**
@@ -117,6 +99,13 @@ export default class Sheet extends React.Component {
         <Toolbar csv={table} showExport={this.props.showExportButton} />
       </div>
     );
+  }
+
+  /**
+   * Event handler f or "change" events coming from the ReactCsvStore.
+   */
+  _onChange() {
+    this.setState(ReactCsvStore.getAll());
   }
 }
 
