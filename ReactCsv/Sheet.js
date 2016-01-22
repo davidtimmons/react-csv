@@ -32,10 +32,18 @@ export default class Sheet extends React.Component {
     this.state = {
       tableUndo: [],
       tableRedo: [],
-      table: this._createEmptyTable()
+      table: ReactCsvStore.getEmptyTable(props.numRows, props.numCols)
     };
+  }
 
-    ReactCsvStore.setDimensions(this.props.numRows, this.props.numCols);
+  /**
+   * Add the table dimensions to the data store.
+   */
+  componentWillMount() {
+    ReactCsvActions.configureDataStore({
+      numRows: this.props.numRows,
+      numCols: this.props.numCols
+    });
   }
 
   /**
@@ -69,18 +77,6 @@ export default class Sheet extends React.Component {
    */
   _onChange() {
     this.setState(ReactCsvStore.getAll());
-  }
-
-  /**
-   * Create an empty 2D array of the specified size.
-   * @return {[[null]]} An array of null arrays.
-   */
-  _createEmptyTable() {
-    var table = [];
-    for (let i = 0, len = this.props.numRows; i < len; i++) {
-      table.push(Array(this.props.numCols).fill(null));
-    }
-    return table;
   }
 
   /**

@@ -16,5 +16,5 @@ export default keyMirror({
   REDO: null,
   RESET: null,
   SAVE_INPUT: null,
-  CREATE_EMPTY_TABLE: null
+  CONFIGURE_DATA_STORE: null
 });

@@ -30,12 +30,14 @@ var _dataStore = {
 
 /**
  * Create an empty 2D array of the specified size.
+ * @param  {number} numRows The number of table rows.
+ * @param  {number} numCols The number of column rows.
  * @return {[[null]]} An array of null arrays.
  */
-function createEmptyTable() {
+function createEmptyTable(numRows, numCols) {
   var table = [];
-  for (let i = 0, len = _dataStore.numRows; i < len; i++) {
-    table.push(Array(_dataStore.numCols).fill(null));
+  for (let i = 0, len = numRows; i < len; i++) {
+    table.push(Array(numCols).fill(null));
   }
   return table;
 }
@@ -46,7 +48,7 @@ function createEmptyTable() {
 function reset() {
   _dataStore.tableUndo.unshift(JSON.stringify(_dataStore.table));
   _dataStore.tableRedo = [];
-  _dataStore.table = createEmptyTable();
+  _dataStore.table = createEmptyTable(_dataStore.numRows, _dataStore.numCols);
 }
 
 
@@ -76,9 +78,8 @@ var ReactCsvStore = Object.assign({}, EventEmitter.prototype, {
     return _dataStore;
   },
 
-  setDimensions(numRows, numCols) {
-    _dataStore.numRows = numRows;
-    _dataStore.numCols = numCols;
+  getEmptyTable: function(numRows, numCols) {
+    return createEmptyTable(numRows, numCols);
   }
 });
 
@@ -102,7 +103,10 @@ ReactCsvDispatcher.register(function(payload) {
       break;
     case ReactCsvConstants.SAVE_INPUT:
       break;
-    case ReactCsvConstants.CREATE_EMPTY_TABLE:
+    case ReactCsvConstants.CONFIGURE_DATA_STORE:
+      if (typeof payload.config === 'object') {
+        _dataStore = Object.assign(_dataStore, payload.config);
+      }
       break;
     default:
       // No operation needed!
