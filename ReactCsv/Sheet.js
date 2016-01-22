@@ -5,17 +5,21 @@
  * MIT License
  *
  * @summary The top-level component class for the ReactCsv module.
- * @module ReactCsv/Sheet
+ * @module ReactCsv
  */
 
+// Import libraries.
 import React from 'react';
-import update from 'react-addons-update';
 import './polyfills';
-import Cell from './Cell.js';
-import HeaderRow from './HeaderRow.js';
-import BodyRows from './BodyRows.js';
-import FooterRow from './FooterRow.js';
-import Toolbar from './Toolbar.js';
+
+// Import React components.
+import Cell from './Cell';
+import HeaderRow from './HeaderRow';
+import BodyRows from './BodyRows';
+import FooterRow from './FooterRow';
+import Toolbar from './Toolbar';
+
+// Import Flux components.
 import ReactCsvStore from './ReactCsvStore';
 import ReactCsvActions from './ReactCsvActions';
 
@@ -28,7 +32,7 @@ export default class Sheet extends React.Component {
 
   constructor(props) {
     super(props);
-    // This is equivalent to <getInitialState()>.
+    // <this.state = {...}> is equivalent to <getInitialState()>.
     this.state = {
       tableUndo: [],
       tableRedo: [],
@@ -47,28 +51,18 @@ export default class Sheet extends React.Component {
   }
 
   /**
-   * Listen for keystrokes and change events after the component attaches to
-   * the document.
+   * Listen for keystrokes and events after the component attaches to the DOM.
    */
   componentDidMount() {
-    // Listen for keystrokes.
-    document.onkeydown = function(e) {
-      // Undo: CTRL-Z | Redo: CTRL-Y
-      if (e.ctrlKey && (e.key === 'z' || e.keyCode === 90 || e.which === 90) && this.state.tableUndo.length > 0) {
-        ReactCsvActions.undo();
-      } else if (e.ctrlKey && (e.key === 'y' || e.keyCode === 89 || e.which === 89) && this.state.tableRedo.length > 0) {
-        ReactCsvActions.redo();
-      }
-    }.bind(this);
-
-    // Listen for events.
+    this._setKeystrokeListeners();
     ReactCsvStore.addChangeListener(this._onChange.bind(this));
   }
 
   /**
-   * Remove the change listener once the component disappears to save memory.
+   * Remove the change listener to save memory once the component disappears.
    */
   componentWillUnmount() {
+    document.onkeydown = null;
     ReactCsvStore.removeChangeListener(this._onChange.bind(this));
   }
 
@@ -78,6 +72,23 @@ export default class Sheet extends React.Component {
    */
   _saveChange(e) {
     ReactCsvActions.save(e);
+  }
+
+  /**
+   * Listen for keystrokes to activate the <undo()> and <redo()> functions.
+   */
+  _setKeystrokeListeners() {
+    document.onkeydown = function(e) { /// Undo: CTRL-Z | Redo: CTRL-Y
+      if (e.ctrlKey &&
+          (e.key === 'z' || e.keyCode === 90 || e.which === 90) &&
+          this.state.tableUndo.length > 0) {
+        ReactCsvActions.undo();
+      } else if (e.ctrlKey &&
+          (e.key === 'y' || e.keyCode === 89 || e.which === 89) &&
+          this.state.tableRedo.length > 0) {
+        ReactCsvActions.redo();
+      }
+    }.bind(this);
   }
 
   /**
