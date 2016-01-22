@@ -9,6 +9,7 @@
  */
 
 import React from 'react';
+import ReactCsvActions from './ReactCsvActions';
 
 
 /**
@@ -44,13 +45,20 @@ export default class Toolbar extends React.Component {
   }
 
   /**
+   * Clear all data and destroy the redo queue.
+   */
+  _reset() {
+    ReactCsvActions.reset();
+  }
+
+  /**
    * Default React render function.
    * @return {object} A reference to the DOM component.
    */
   render() {
     return (
       <div className="mt1">
-        <button className="mr1 btn btn-primary bg-darken-4" onClick={this.props.reset}>Reset</button>
+        <button className="mr1 btn btn-primary bg-darken-4" onClick={this._reset}>Reset</button>
         {this.props.showExport ? <a className="ml1 btn btn-primary bg-darken-4" href={this._getFileUrl()} download="data.csv">Export to CSV</a> : null}
       </div>
     );
@@ -63,7 +71,6 @@ export default class Toolbar extends React.Component {
  * @memberof Toolbar
  */
 Toolbar.propTypes = {
-  reset: React.PropTypes.func.isRequired,
   showExport: React.PropTypes.bool.isRequired,
   csv: React.PropTypes.arrayOf(React.PropTypes.array.isRequired)
 };

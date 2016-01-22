@@ -10,12 +10,14 @@
 
 import React from 'react';
 import update from 'react-addons-update';
-import './polyfills.js';
+import './polyfills';
 import Cell from './Cell.js';
 import HeaderRow from './HeaderRow.js';
 import BodyRows from './BodyRows.js';
 import FooterRow from './FooterRow.js';
 import Toolbar from './Toolbar.js';
+import ReactCsvStore from './ReactCsvStore';
+import ReactCsvActions from './ReactCsvActions';
 
 
 /**
@@ -32,13 +34,17 @@ export default class Sheet extends React.Component {
       tableRedo: [],
       table: this._createEmptyTable()
     };
+
+    ReactCsvStore.setDimensions(this.props.numRows, this.props.numCols);
   }
 
   /**
-   * Listen for keystrokes after the component attaches to the document.
+   * Listen for keystrokes and change events after the component attaches to
+   * the document.
    */
   componentDidMount() {
     document.onkeydown = function(e) {
+      // Listen for keystrokes.
       // Undo: CTRL-Z | Redo: CTRL-Y
       if (e.ctrlKey && (e.key === 'z' || e.keyCode === 90 || e.which === 90) && this.state.tableUndo.length > 0) {
         this._undo();
@@ -46,6 +52,23 @@ export default class Sheet extends React.Component {
         this._redo();
       }
     }.bind(this);
+
+    // Listen for events.
+    ReactCsvStore.addChangeListener(this._onChange.bind(this));
+  }
+
+  /**
+   * Remove the change listener once the component disappears to save memory.
+   */
+  componentWillUnmount() {
+    ReactCsvStore.removeChangeListener(this._onChange.bind(this));
+  }
+
+  /**
+   * Event handler f or "change" events coming from the ReactCsvStore.
+   */
+  _onChange() {
+    this.setState(ReactCsvStore.getAll());
   }
 
   /**
@@ -83,17 +106,6 @@ export default class Sheet extends React.Component {
   }
 
   /**
-   * Clear all data and destroy the redo queue.
-   */
-  _reset() {
-    this.setState((prevState) => {return {
-      tableUndo: update(prevState.tableUndo, {$unshift: [JSON.stringify(prevState.table)]}),
-      tableRedo: [],
-      table: this._createEmptyTable()
-    }});
-  }
-
-  /**
    * Update state with the new change and enable undo.
    * @param {object} e A DOM event object.
    */
@@ -122,7 +134,6 @@ export default class Sheet extends React.Component {
     const rows = this.props.numRows;
     const table = this.state.table;
     const save = this._saveChange.bind(this);
-    const reset = this._reset.bind(this);
     return (
       <div>
         <table className="table-light overflow-hidden bg-white border">
@@ -130,7 +141,7 @@ export default class Sheet extends React.Component {
           <BodyRows numCols={cols} numRows={this.props.hasFooter ? rows-2 : rows-1} csv={table} saveChange={save} />
           {this.props.hasFooter ? <FooterRow numCols={cols} numRows={rows-1} csv={table} saveChange={save} /> : null}
         </table>
-        <Toolbar csv={table} reset={reset} showExport={this.props.showExportButton} />
+        <Toolbar csv={table} showExport={this.props.showExportButton} />
       </div>
     );
   }
