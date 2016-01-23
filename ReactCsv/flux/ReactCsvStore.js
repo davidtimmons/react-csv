@@ -11,7 +11,7 @@
 import ReactCsvDispatcher from './ReactCsvDispatcher';
 import ReactCsvConstants from './ReactCsvConstants';
 import EventEmitter from 'events';
-import './polyfills'
+import '../polyfills'
 
 
 // This is the master CSV data store. Initialized in <initializeDataStore()>.

@@ -9,7 +9,7 @@
  */
 
 import React from 'react';
-import ReactCsvActions from '../ReactCsvActions';
+import ReactCsvActions from '../flux/ReactCsvActions';
 
 
 /**

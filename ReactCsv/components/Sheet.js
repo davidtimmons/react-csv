@@ -20,8 +20,8 @@ import FooterRow from './FooterRow';
 import Toolbar from './Toolbar';
 
 // Import Flux components.
-import ReactCsvStore from '../ReactCsvStore';
-import ReactCsvActions from '../ReactCsvActions';
+import ReactCsvStore from '../flux/ReactCsvStore';
+import ReactCsvActions from '../flux/ReactCsvActions';
 
 
 /**
