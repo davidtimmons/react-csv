@@ -1,4 +1,4 @@
-React CSV Component
+React CSV
 ====================
 _**Author:** David Timmons ([http://david.timmons.io](http://david.timmons.io "Visit my website!"))_
 
