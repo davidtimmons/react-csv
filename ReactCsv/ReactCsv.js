@@ -14,9 +14,9 @@
  *   ++ Redo a change with CTRL-Y.
  *   ++ Export all data into a CSV file.
  *
- * DEPENDENCIES:
- *   [React with Addons, Basscss, JSX/ES2015 Transpiler, Webpack,
- *   IE13+ (optional export feature will not work in older IE versions)]
+ * BROWSERS:
+ *   The optional data export feature requires a modern browser (e.g. IE13+)
+ *   that supports HTML5 APIs.
  *
  * EXAMPLE:
  *   ReactDOM.render(
@@ -30,7 +30,6 @@ import ReactDOM from 'react-dom';
 import Sheet from './components/Sheet';
 
 
-// Optionally remove this and export <Sheet> as a module.
 ReactDOM.render(
   <Sheet numCols={8} numRows={5} hasFooter={true} showExportButton={true} />,
   document.getElementById('react-csv')
