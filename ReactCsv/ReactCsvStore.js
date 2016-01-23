@@ -14,14 +14,8 @@ import ReactCsvConstants from './ReactCsvConstants';
 import './polyfills'
 
 
-// This is the master CSV data store.
-var _dataStore = {
-  tableUndo: [],
-  tableRedo: [],
-  table: [],
-  numRows: 0,
-  numCols: 0
-}
+// This is the master CSV data store. Initialized in <initializeDataStore()>.
+var _dataStore = {};
 
 
 // ----------------- //
@@ -46,11 +40,13 @@ function createEmptyTable(numRows, numCols) {
  * Create the data store based on custom table size settings.
  * @param {object} data Data store configuration settings.
  */
-function initializeStore(data) {
+function initializeDataStore(data) {
   var numRows = data.numRows || 0;
   var numCols = data.numCols || 0;
-  _dataStore = Object.assign(_dataStore, data);
+  _dataStore.tableUndo = [];
+  _dataStore.tableRedo = [];
   _dataStore.table = createEmptyTable(numRows, numCols);
+  _dataStore = Object.assign(_dataStore, data);
 }
 
 /**
@@ -131,16 +127,6 @@ var ReactCsvStore = Object.assign({}, EventEmitter.prototype, {
    */
   getAll: function() {
     return _dataStore;
-  },
-
-  /**
-   * Get an empty table, useful for establishing initial state.
-   * @param  {number} numRows The number of table rows.
-   * @param  {number} numCols The number of table columns.
-   * @return {[[null]]}       An array of arrays containing null values.
-   */
-  getEmptyTable: function(numRows, numCols) {
-    return createEmptyTable(numRows, numCols);
   }
 });
 
@@ -171,10 +157,10 @@ ReactCsvDispatcher.register(function(payload) {
       ReactCsvStore.emitChange();
       break;
     case ReactCsvConstants.CONFIGURE_DATA_STORE:
-      initializeStore(payload.data);
+      initializeDataStore(payload.data);
+      ReactCsvStore.emitChange();
       break;
-    default:
-      // No operation needed!
+    default: /// No operation needed!
       break;
   }
 });

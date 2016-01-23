@@ -28,10 +28,16 @@ export default class FooterRow extends React.Component {
    */
   render() {
     var rows = this.props.numRows;
-    var cells = Array(this.props.numCols).fill(0).map((val, i) =>
-      <td className="p0 border-top border-right" key={10*rows + i} data-row={rows} onBlur={this.props.saveChange}>
-        <Cell csv={this.props.csv[rows][i]} classFoot="bg-yellow muted bold" />
-      </td>
+    var cells = this.props.csv[0].length === 0 ? null :
+      Array(this.props.numCols).fill(0).map(
+        (val, i) =>
+          <td className="p0 border-top border-right"
+            key={10*rows + i}
+            data-row={rows}
+            onBlur={this.props.saveChange}>
+            <Cell csv={this.props.csv[rows][i]}
+              classFoot="bg-yellow muted bold" />
+          </td>
     );
     return (
       <tfoot>

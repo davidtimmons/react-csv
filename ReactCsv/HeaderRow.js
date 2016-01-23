@@ -27,10 +27,16 @@ export default class HeaderRow extends React.Component {
    * @return {object} A reference to the DOM component.
    */
   render() {
-    var cells = Array(this.props.numCols).fill(0).map((val, i) =>
-      <th className="p0 border-right" key={i} data-row={0} onBlur={this.props.saveChange}>
-        <Cell csv={this.props.csv[0][i]} classHead="bg-lighten-1 bold" />
-      </th>
+    var cells = this.props.csv[0].length === 0 ? null :
+      Array(this.props.numCols).fill(0).map(
+        (val, i) =>
+          <th className="p0 border-right"
+            key={i}
+            data-row={0}
+            onBlur={this.props.saveChange}>
+            <Cell csv={this.props.csv[0][i]}
+              classHead="bg-lighten-1 bold" />
+          </th>
     );
     return (
       <thead className="bg-darken-1">

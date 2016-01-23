@@ -66,7 +66,7 @@ class ReactCsvActions {
    * Configure the data store state object.
    * @param  {object} config Configuration settings to merge with state object.
    */
-  configureDataStore(config) {
+  initializeDataStore(config) {
     if (typeof config !== 'object') {
       return;
     }

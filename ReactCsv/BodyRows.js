@@ -27,15 +27,20 @@ export default class BodyRows extends React.Component {
    * @return {object} A reference to the DOM component.
    */
   render() {
-    var cells = (self =>
-      Array(self.props.numRows).fill(0).map((val, i) =>
-        <tr key={i+1}>
-          {Array(self.props.numCols).fill(0).map((val, j) =>
-            <td className="p0 border-right" key={10*(i+1) + j} data-row={i+1} onBlur={this.props.saveChange}>
-              <Cell csv={this.props.csv[i+1][j]} />
-            </td>
-          )}
-        </tr>
+    var cells = this.props.csv[0].length === 0 ? null :
+      (self => Array(self.props.numRows).fill(0).map(
+        (val, i) =>
+          <tr key={i+1}>
+          {Array(self.props.numCols).fill(0).map(
+              (val, j) =>
+                <td className="p0 border-right"
+                  key={10*(i+1) + j}
+                  data-row={i+1}
+                  onBlur={this.props.saveChange}>
+                  <Cell csv={this.props.csv[i+1][j]} />
+                </td>
+            )}
+          </tr>
       )
     )(this);
     return (

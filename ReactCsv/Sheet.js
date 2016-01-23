@@ -32,30 +32,20 @@ export default class Sheet extends React.Component {
 
   constructor(props) {
     super(props);
-    // <this.state = {...}> is equivalent to <getInitialState()>.
-    this.state = {
-      tableUndo: [],
-      tableRedo: [],
-      table: ReactCsvStore.getEmptyTable(props.numRows, props.numCols)
-    };
+    this.state = {loading: true}; /// Note: Equivalent to <getInitialState()>.
   }
 
   /**
-   * Add the table dimensions to the data store.
-   */
-  componentWillMount() {
-    ReactCsvActions.configureDataStore({
-      numRows: this.props.numRows,
-      numCols: this.props.numCols
-    });
-  }
-
-  /**
-   * Listen for keystrokes and events after the component attaches to the DOM.
+   * Listen for keystrokes and events then get initial state data.
    */
   componentDidMount() {
     this._setKeystrokeListeners();
     ReactCsvStore.addChangeListener(this._onChange.bind(this));
+    ReactCsvActions.initializeDataStore({
+      numRows: this.props.numRows,
+      numCols: this.props.numCols,
+      loading: false
+    });
   }
 
   /**
@@ -92,10 +82,20 @@ export default class Sheet extends React.Component {
   }
 
   /**
-   * Default React render function.
+   * Render the CSV table but only after the data has loaded into state.
    * @return {object} A reference to the DOM component.
    */
   render() {
+    // Display loading message.
+    if (this.state.loading === true) {
+      return (
+        <div>
+          <p className="italic">Loading...</p>
+        </div>
+      );
+    }
+    
+    // Display table with data.
     const cols = this.props.numCols;
     const rows = this.props.numRows;
     const table = this.state.table;
