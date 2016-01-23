@@ -27,7 +27,7 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Sheet from './Sheet.js';
+import Sheet from './components/Sheet';
 
 
 // Optionally remove this and export <Sheet> as a module.

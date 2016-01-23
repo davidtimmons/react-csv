@@ -5,11 +5,11 @@
  * MIT License
  *
  * @summary A component controlling the main table body rows.
- * @module ReactCsv/BodyRows
+ * @module ReactCsv
  */
 
 import React from 'react';
-import Cell from './Cell.js';
+import Cell from './Cell';
 
 
 /**

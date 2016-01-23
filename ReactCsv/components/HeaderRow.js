@@ -4,19 +4,19 @@
  * http://david.timmons.io
  * MIT License
  *
- * @summary An optional component controlling the table footer.
- * @module ReactCsv/FooterRow
+ * @summary A component controlling the table header.
+ * @module ReactCsv
  */
 
 import React from 'react';
-import Cell from './Cell.js';
+import Cell from './Cell';
 
 
 /**
- * (Optional) Spreadsheet footer row controlled via <Sheet> with <hasFooter>.
+ * Spreadsheet header row intended for column titles.
  * @extends React.Component
  */
-export default class FooterRow extends React.Component {
+export default class HeaderRow extends React.Component {
 
   constructor(props) {
     super(props);
@@ -27,24 +27,23 @@ export default class FooterRow extends React.Component {
    * @return {object} A reference to the DOM component.
    */
   render() {
-    var rows = this.props.numRows;
     var cells = this.props.csv[0].length === 0 ? null :
       Array(this.props.numCols).fill(0).map(
         (val, i) =>
-          <td className="p0 border-top border-right"
-            key={10*rows + i}
-            data-row={rows}
+          <th className="p0 border-right"
+            key={i}
+            data-row={0}
             onBlur={this.props.saveChange}>
-            <Cell csv={this.props.csv[rows][i]}
-              classFoot="bg-yellow muted bold" />
-          </td>
+            <Cell csv={this.props.csv[0][i]}
+              classHead="bg-lighten-1 bold" />
+          </th>
     );
     return (
-      <tfoot>
-        <tr key={rows}>
+      <thead className="bg-darken-1">
+        <tr key={0}>
           {cells}
         </tr>
-      </tfoot>
+      </thead>
     );
   }
 }
@@ -52,9 +51,9 @@ export default class FooterRow extends React.Component {
 /**
  * Restrict the property types.
  * @type {object}
- * @memberof FooterRow
+ * @memberof HeaderRow
  */
-FooterRow.propTypes = {
+HeaderRow.propTypes = {
   saveChange: React.PropTypes.func.isRequired,
   csv: React.PropTypes.arrayOf(React.PropTypes.array.isRequired)
 };

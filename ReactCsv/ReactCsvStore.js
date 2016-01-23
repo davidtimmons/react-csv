@@ -9,8 +9,8 @@
  */
 
 import ReactCsvDispatcher from './ReactCsvDispatcher';
-import EventEmitter from 'events';
 import ReactCsvConstants from './ReactCsvConstants';
+import EventEmitter from 'events';
 import './polyfills'
 
 

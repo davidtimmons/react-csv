@@ -5,7 +5,7 @@
  * MIT License
  *
  * @summary A component controlling the table cells.
- * @module ReactCsv/Cell
+ * @module ReactCsv
  */
 
 import React from 'react';

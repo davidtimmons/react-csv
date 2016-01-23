@@ -5,11 +5,11 @@
  * MIT License
  *
  * @summary A component controlling the "clear" and "export" functions.
- * @module ReactCsv/Toolbar
+ * @module ReactCsv
  */
 
 import React from 'react';
-import ReactCsvActions from './ReactCsvActions';
+import ReactCsvActions from '../ReactCsvActions';
 
 
 /**

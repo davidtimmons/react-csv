@@ -10,7 +10,7 @@
 
 // Import libraries.
 import React from 'react';
-import './polyfills';
+import '../polyfills';
 
 // Import React components.
 import Cell from './Cell';
@@ -20,8 +20,8 @@ import FooterRow from './FooterRow';
 import Toolbar from './Toolbar';
 
 // Import Flux components.
-import ReactCsvStore from './ReactCsvStore';
-import ReactCsvActions from './ReactCsvActions';
+import ReactCsvStore from '../ReactCsvStore';
+import ReactCsvActions from '../ReactCsvActions';
 
 
 /**
@@ -94,7 +94,7 @@ export default class Sheet extends React.Component {
         </div>
       );
     }
-    
+
     // Display table with data.
     const cols = this.props.numCols;
     const rows = this.props.numRows;
