@@ -6,14 +6,13 @@
   "license": "MIT",
   "author": "David Timmons (http://david.timmons.io/)",
   "homepage": "https://github.com/davidtimmons/react-csv#readme",
-  "main": "react-csv.js",
   "bugs": {
     "url": "https://github.com/davidtimmons/react-csv/issues"
   },
   "dependencies": {
     "flux": "^2.1.1",
+    "keymirror": "^0.1.1",
     "react": "^0.14.6",
-    "react-addons-update": "^0.14.6",
     "react-dom": "^0.14.6"
   },
   "devDependencies": {
@@ -24,6 +23,6 @@
     "webpack": "^1.12.11"
   },
   "scripts": {
-    "build": "webpack"
+    "build": "webpack --progress --colors"
   }
 }

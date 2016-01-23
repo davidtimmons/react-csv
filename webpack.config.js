@@ -12,26 +12,16 @@ var webpack = require('webpack');
 
 
 // Configure build based on debug or production mode.
-const DEBUG = true;
+const DEBUG = false;
 
 // Define common plugins.
-var plugins = [
-  new webpack.optimize.CommonsChunkPlugin({
-    name: 'commons',
-    filename: 'commons.js',
-    children: true,
-    minChunks: 2
-  }),
-]
+var plugins = [];
 
 // Define production plugins.
 if (!DEBUG) {
   plugins = plugins.concat([
     new webpack.optimize.DedupePlugin(),
     new webpack.optimize.OccurenceOrderPlugin(),
-    new webpack.optimize.MinChunkSizePlugin({
-      minChunkSize: 51200 // ~50kb
-    }),
     new webpack.optimize.UglifyJsPlugin({
       mangle: true,
       compress: {
