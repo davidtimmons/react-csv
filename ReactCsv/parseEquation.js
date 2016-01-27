@@ -24,8 +24,7 @@ const OPS = {
 };
 const BEGIN_SUB = '('; /// The beginning character of a sub-expression.
 const END_SUB = ')'; /// The final character of a sub-expression.
-const VALID = '0-9 '; /// Non-operator values that may appear in an equation.
-const INVALID_RE = new RegExp('[^' + VALID + Object.keys(OPS).join('\\') + ']');
+const INVALID_RE = new RegExp('[^0-9\. ' + Object.keys(OPS).join('\\') + ']');
 const ERROR_MSG = 'Invalid input!'; /// Message returned to the user upon error.
 
 
