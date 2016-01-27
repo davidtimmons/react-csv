@@ -238,8 +238,10 @@ function doShuntingYard(expr=[]) {
 export default function parseEquation(eqn='') {
   if (isValidEquation(eqn)) {
     return doShuntingYard(normalizeExpression(eqn));
-  } else {
+  } else if (isEquation(eqn)) {
     return removeEqualSign(eqn);
+  } else {
+    return eqn;
   }
 }
 
