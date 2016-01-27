@@ -12,6 +12,7 @@ import ReactCsvDispatcher from './ReactCsvDispatcher';
 import ReactCsvConstants from './ReactCsvConstants';
 import EventEmitter from 'events';
 import '../polyfills'
+import parseEquation from '../parseEquation';
 
 
 // This is the master CSV data store. Initialized in <initializeDataStore()>.
@@ -83,7 +84,8 @@ function save(e) {
   var colIndex = e.currentTarget.cellIndex;
   _dataStore.tableUndo.unshift(JSON.stringify(_dataStore.table));
   _dataStore.tableRedo = [];
-  _dataStore.table[rowIndex][colIndex] = e.target.value;
+  // Parsed equations must be stored as a string to avoid errors upon render!
+  _dataStore.table[rowIndex][colIndex] = '' + parseEquation(e.target.value);
 }
 
 // -------------- //
