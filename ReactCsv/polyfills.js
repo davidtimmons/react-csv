@@ -4,11 +4,20 @@
  * http://david.timmons.io
  * MIT License
  *
- * Polyfills for ES2015 functions.
+ * Polyfills for ES2015 functions and expanded JavaScript functionality.
  */
 
 
+// Array.prototype.peek()
+// Returns the top element of a stack (i.e. the last array element).
+ if (!Array.prototype.peek) {
+   Array.prototype.peek = function() {
+     return (this.length > 0) ? this[this.length - 1] : null;
+   }
+ }
+
 // Array.prototype.fill()
+// Fills an array with the specified value.
 // Source: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/fill#Polyfill
 if (!Array.prototype.fill) {
   Array.prototype.fill = function(value) {
@@ -37,6 +46,7 @@ if (!Array.prototype.fill) {
 }
 
 // Object.assign()
+// Merges two objects.
 // Source:https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/assign#Polyfill
 if (typeof Object.assign != 'function') {
   (function () {
