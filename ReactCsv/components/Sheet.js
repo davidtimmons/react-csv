@@ -65,6 +65,17 @@ export default class Sheet extends React.Component {
   }
 
   /**
+   * Update form input value on change without impacting undo or redo.
+   * @param {object} e A DOM event object.
+   */
+  _updateValue(e) {
+    var wasNotEnterKey = !(e.keyCode === 13 || e.which === 13);
+    if (wasNotEnterKey) {
+      ReactCsvActions.updateValue(e);
+    }
+  }
+
+  /**
    * Listen for keystrokes to activate the <undo()> and <redo()> functions.
    */
   _setKeystrokeListeners() {
@@ -98,16 +109,30 @@ export default class Sheet extends React.Component {
     // Display table with data.
     const cols = this.props.numCols;
     const rows = this.props.numRows;
-    const table = this.state.table;
+    const table = this.state.tablePending;
+    const update = this._updateValue.bind(this);
     const save = this._saveChange.bind(this);
     return (
       <div>
         <table className="table-light overflow-hidden bg-white border">
-          <HeaderRow numCols={cols} csv={table} saveChange={save} />
-          <BodyRows numCols={cols} numRows={this.props.hasFooter ? rows-2 : rows-1} csv={table} saveChange={save} />
-          {this.props.hasFooter ? <FooterRow numCols={cols} numRows={rows-1} csv={table} saveChange={save} /> : null}
+          <HeaderRow numCols={cols}
+            csv={table}
+            update={update}
+            saveChange={save} />
+          <BodyRows numCols={cols}
+            numRows={this.props.hasFooter ? rows-2 : rows-1}
+            csv={table}
+            update={update}
+            saveChange={save} />
+          {this.props.hasFooter ? <FooterRow numCols={cols}
+                                    numRows={rows-1}
+                                    csv={table}
+                                    update={update}
+                                    saveChange={save} />
+                                    : null}
         </table>
-        <Toolbar csv={table} showExport={this.props.showExportButton} />
+        <Toolbar csv={table}
+          showExport={this.props.showExportButton} />
       </div>
     );
   }

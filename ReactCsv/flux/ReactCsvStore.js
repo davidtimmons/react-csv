@@ -47,6 +47,8 @@ function initializeDataStore(data) {
   _dataStore.tableUndo = [];
   _dataStore.tableRedo = [];
   _dataStore.table = createEmptyTable(numRows, numCols);
+  // The pending table populates the spreadsheet input values.
+  _dataStore.tablePending = createEmptyTable(numRows, numCols);
   _dataStore = Object.assign(_dataStore, data);
 }
 
@@ -54,38 +56,63 @@ function initializeDataStore(data) {
  * Undo the current data state.
  */
 function undo() {
-  _dataStore.tableRedo.unshift(JSON.stringify(_dataStore.table));
-  _dataStore.table = JSON.parse(_dataStore.tableUndo.shift());
+  _dataStore.tableRedo.unshift(JSON.stringify(_dataStore.tablePending));
+  _dataStore.table = _dataStore.tablePending =
+    JSON.parse(_dataStore.tableUndo.shift());
 }
 
 /**
  * Restore the previous data state.
  */
 function redo() {
-  _dataStore.tableUndo.unshift(JSON.stringify(_dataStore.table));
-  _dataStore.table = JSON.parse(_dataStore.tableRedo.shift());
+  _dataStore.tableUndo.unshift(JSON.stringify(_dataStore.tablePending));
+  _dataStore.table = _dataStore.tablePending =
+    JSON.parse(_dataStore.tableRedo.shift());
 }
 
 /**
  * Clear all data and destroy the redo queue.
  */
 function reset() {
-  _dataStore.tableUndo.unshift(JSON.stringify(_dataStore.table));
+  _dataStore.tableUndo.unshift(JSON.stringify(_dataStore.tablePending));
   _dataStore.tableRedo = [];
   _dataStore.table = createEmptyTable(_dataStore.numRows, _dataStore.numCols);
+  _dataStore.tablePending =
+    createEmptyTable(_dataStore.numRows, _dataStore.numCols);
+}
+
+/**
+ * Update state based on a change to a form input value. This does not impact
+ * the undo or redo state.
+ * @param {object} e A DOM event object.
+ */
+function updateValue(e) {
+  return save(e, true);
 }
 
 /**
  * Update state with the new change and enable undo.
+ * @param {boolean} onlyUpdateInputValue=false Update form input value only.
  * @param {object} e A DOM event object.
  */
-function save(e) {
+function save(e, onlyUpdateInputValue=false) {
   var rowIndex = e.currentTarget.dataset.row;
   var colIndex = e.currentTarget.cellIndex;
+
+  // Only update the form input value.
+  if (onlyUpdateInputValue) {
+    _dataStore.tablePending[rowIndex][colIndex] = e.target.value;
+    return;
+  }
+
+  // Update everything, including the undo and redo state.
   _dataStore.tableUndo.unshift(JSON.stringify(_dataStore.table));
   _dataStore.tableRedo = [];
+
   // Parsed equations must be stored as a string to avoid errors upon render!
-  _dataStore.table[rowIndex][colIndex] = '' + parseEquation(e.target.value);
+  _dataStore.table[rowIndex][colIndex] =
+    _dataStore.tablePending[rowIndex][colIndex] =
+    '' + parseEquation(e.target.value);
 }
 
 // -------------- //
@@ -152,6 +179,10 @@ ReactCsvDispatcher.register(function(payload) {
       break;
     case ReactCsvConstants.RESET:
       reset();
+      ReactCsvStore.emitChange();
+      break;
+    case ReactCsvConstants.TYPING_INPUT:
+      updateValue(payload.data);
       ReactCsvStore.emitChange();
       break;
     case ReactCsvConstants.SAVE_INPUT:

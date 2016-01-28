@@ -9,6 +9,7 @@
  */
 
 import React from 'react';
+import ReactCsvActions from '../flux/ReactCsvActions';
 
 
 /**
@@ -40,7 +41,9 @@ export default class Cell extends React.Component {
   render() {
     return (
       <form className="m0 p0 container block" onSubmit={this._handleSubmit}>
-        <input type="text" className={"col-12 border-none " + this.state.styles} value={this.props.csv} />
+        <input type="text"
+          className={"col-12 border-none " + this.state.styles}
+          value={this.props.csv} />
       </form>
     );
   }

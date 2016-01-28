@@ -15,6 +15,7 @@ export default keyMirror({
   UNDO: null,
   REDO: null,
   RESET: null,
+  TYPING_INPUT: null,
   SAVE_INPUT: null,
   CONFIGURE_DATA_STORE: null
 });

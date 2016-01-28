@@ -33,6 +33,7 @@ export default class HeaderRow extends React.Component {
           <th className="p0 border-right"
             key={i}
             data-row={0}
+            onChange={this.props.update}
             onBlur={this.props.saveChange}>
             <Cell csv={this.props.csv[0][i]}
               classHead="bg-lighten-1 bold" />
@@ -54,6 +55,7 @@ export default class HeaderRow extends React.Component {
  * @memberof HeaderRow
  */
 HeaderRow.propTypes = {
+  update: React.PropTypes.func.isRequired,
   saveChange: React.PropTypes.func.isRequired,
   csv: React.PropTypes.arrayOf(React.PropTypes.array.isRequired)
 };

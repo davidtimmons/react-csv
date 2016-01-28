@@ -36,6 +36,7 @@ export default class BodyRows extends React.Component {
                 <td className="p0 border-right"
                   key={10*(i+1) + j}
                   data-row={i+1}
+                  onChange={this.props.update}
                   onBlur={this.props.saveChange}>
                   <Cell csv={this.props.csv[i+1][j]} />
                 </td>
@@ -57,6 +58,7 @@ export default class BodyRows extends React.Component {
  * @memberof BodyRows
  */
 BodyRows.propTypes = {
+  update: React.PropTypes.func.isRequired,
   saveChange: React.PropTypes.func.isRequired,
   csv: React.PropTypes.arrayOf(React.PropTypes.array.isRequired)
 };

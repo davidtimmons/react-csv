@@ -47,6 +47,16 @@ class ReactCsvActions {
   }
 
   /**
+   * Updates an input value while typing changes. Triggered in <Cell>.
+   */
+  updateValue(e) {
+    ReactCsvDispatcher.dispatch({
+      actionType: ReactCsvConstants.TYPING_INPUT,
+      data: e
+    });
+  }
+
+  /**
    * Activate the save function. Triggered in <Cell>.
    */
   save(e) {

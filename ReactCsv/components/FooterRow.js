@@ -34,6 +34,7 @@ export default class FooterRow extends React.Component {
           <td className="p0 border-top border-right"
             key={10*rows + i}
             data-row={rows}
+            onChange={this.props.update}
             onBlur={this.props.saveChange}>
             <Cell csv={this.props.csv[rows][i]}
               classFoot="bg-yellow muted bold" />
@@ -55,6 +56,7 @@ export default class FooterRow extends React.Component {
  * @memberof FooterRow
  */
 FooterRow.propTypes = {
+  update: React.PropTypes.func.isRequired,
   saveChange: React.PropTypes.func.isRequired,
   csv: React.PropTypes.arrayOf(React.PropTypes.array.isRequired)
 };
