@@ -2,15 +2,16 @@ React CSV
 ====================
 _**Author:** David Timmons ([http://david.timmons.io](http://david.timmons.io "Visit my website!"))_
 
-React CSV is a React/Flux module written in _JSX_ and _JavaScript (ES2015)_ that simulates a simple CSV (Comma-Separated Value) spreadsheet.
+React CSV is a React/Flux module written in _JSX_ and _JavaScript (ES2015)_ that simulates a CSV (Comma-Separated Value) spreadsheet.
 
 ## Features:
 
 * Define number of columns and number of rows.
 * Create an optional footer row.
-* Create an optional download link (for modern browsers only).
+* Evaluate arithmetic equation strings using the shunting-yard algorithm.
 * Undo a change with ```CTRL-Z```.
 * Redo a change with ```CTRL-Y```.
+* Create an optional download link (for modern browsers only).
 * Export all data into a CSV file.
 
 ## Dependencies
